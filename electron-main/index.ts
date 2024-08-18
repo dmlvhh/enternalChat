@@ -1,5 +1,6 @@
 // electron-main/index.ts
 import { app, BrowserWindow,ipcMain } from "electron"
+import { onLoginOrRegister, onLoginSuccess } from "./ipc";
 const path = require("path");
 
 const login_width = 350
@@ -10,11 +11,11 @@ const createWindow = () => {
   const win = new BrowserWindow({
     width: login_width,
     height: login_height,
-    show: false,
+    show: true,
     autoHideMenuBar: true,
-    resizable: false,
-    titleBarStyle:'hidden',
-    frame:false,
+    resizable: true,
+    // titleBarStyle:'hidden',
+    frame:true,
     title:"倾心IM",
     transparent:true,
     webPreferences: {
@@ -25,15 +26,7 @@ const createWindow = () => {
     },
   })
 
-  ipcMain.on("loginOrRegister",(e,isLogin)=>{
-    win.setResizable(true)
-    if(isLogin){
-      win.setSize(login_width,login_height)
-    }else{
-      win.setSize(login_width,register_height)
-    }
-    win.setResizable(false)
-  })
+
 
   // 如果打包了，渲染index.html
   if (process.env.NODE_ENV !== 'development') {
@@ -49,6 +42,31 @@ const createWindow = () => {
   win.on('ready-to-show', () => {
     win.show()
     win.setTitle('倾心IM')
+  })
+
+  onLoginOrRegister((isLogin)=>{
+    win.setResizable(true)
+    if(isLogin){
+      win.setSize(login_width,login_height)
+    }else{
+      win.setSize(login_width,register_height)
+    }
+    win.setResizable(false)
+  })
+
+
+  onLoginSuccess((config)=>{
+    win.setResizable(true)
+    win.setSize(850,800)
+    win.center()
+     //可最大化
+     win.setMaximizable(true)
+     //设置最小的窗口大小
+     win.setMinimumSize(800, 600)
+
+     if(config.admin) {
+
+     }
   })
 }
 

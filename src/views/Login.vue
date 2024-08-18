@@ -144,8 +144,6 @@ const changeCheckCocde = async () => {
 const errorMsg = ref(null);
 const showLoading = ref(false);
 const submit = async () => {
-  console.log(1111111111);
-
   clearVerify();
   if (!checkValue("checkEmail", formData.value.email, "请输入正确的邮箱")) {
     return;
@@ -202,17 +200,18 @@ const submit = async () => {
     userInfoStore.setInfo(result.data);
     localStorage.setItem("token", result.data.token);
     router.push("/main");
-    // const screeenWidth = window.screen.width;
-    // const screeenHeight = window.screen.height;
-    // window.ipcRenderer.send("openChat", {
-    //   email: formData.value.email,
-    //   token: result.data.token,
-    //   userId: result.data.userId,
-    //   nickName: result.data.nickName,
-    //   admin: result.data.admin,
-    //   screeenWidth: screeenWidth,
-    //   screeenWidth: screeenHeight,
-    // });
+
+    const screeenWidth = window.screen.width;
+    const screeenHeight = window.screen.height;
+    window.ipcRenderer.send("openChat", {
+      email: formData.value.email,
+      token: result.data.token,
+      userId: result.data.userId,
+      nickName: result.data.nickName,
+      admin: result.data.admin,
+      screeenWidth: screeenWidth,
+      screeenWidth: screeenHeight,
+    });
   } else {
     proxy.Message.success("注册成功");
     changeOpType();

@@ -7,5 +7,6 @@
 <style scoped>
 .body {
   background-color: #ffff;
+  height: calc(100vh);
 }
 </style>
