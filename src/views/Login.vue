@@ -102,19 +102,20 @@
 </template>
 
 <script setup>
-import { ref, reactive, getCurrentInstance, nextTick, onMounted } from "vue";
-// import { useUserInfoStore } from "@/stores/UserInfoStore";
+import { ref, getCurrentInstance, nextTick, onMounted } from "vue";
+import { useUserInfoStore } from "@/stores/index";
 import { useRouter } from "vue-router";
-// import md5 from "js-md5";
+import md5 from "js-md5";
 const { proxy } = getCurrentInstance();
-// const userInfoStore = useUserInfoStore();
+const userInfoStore = useUserInfoStore();
 const router = useRouter();
-
 const formData = ref([]);
 const formDataRef = ref(null);
+
 onMounted(() => {
   changeCheckCocde();
 });
+
 const isLogin = ref(true);
 const changeOpType = () => {
   window.ipcRenderer.send("loginOrRegister", !isLogin.value);
@@ -139,9 +140,12 @@ const changeCheckCocde = async () => {
   checkCodeUrl.value = result.data.checkCode;
   localStorage.setItem("checkCodeKey", result.data.checkCodeKey);
 };
+
 const errorMsg = ref(null);
 const showLoading = ref(false);
 const submit = async () => {
+  console.log(1111111111);
+
   clearVerify();
   if (!checkValue("checkEmail", formData.value.email, "请输入正确的邮箱")) {
     return;
@@ -198,19 +202,19 @@ const submit = async () => {
     userInfoStore.setInfo(result.data);
     localStorage.setItem("token", result.data.token);
     router.push("/main");
-    const screeenWidth = window.screen.width;
-    const screeenHeight = window.screen.height;
-    window.ipcRenderer.send("openChat", {
-      email: formData.value.email,
-      token: result.data.token,
-      userId: result.data.userId,
-      nickName: result.data.nickName,
-      admin: result.data.admin,
-      screeenWidth: screeenWidth,
-      screeenWidth: screeenHeight,
-    });
+    // const screeenWidth = window.screen.width;
+    // const screeenHeight = window.screen.height;
+    // window.ipcRenderer.send("openChat", {
+    //   email: formData.value.email,
+    //   token: result.data.token,
+    //   userId: result.data.userId,
+    //   nickName: result.data.nickName,
+    //   admin: result.data.admin,
+    //   screeenWidth: screeenWidth,
+    //   screeenWidth: screeenHeight,
+    // });
   } else {
-    proxy.Message.success("登录成功");
+    proxy.Message.success("注册成功");
     changeOpType();
   }
 };
