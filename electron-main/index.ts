@@ -2,25 +2,26 @@
 import { app, BrowserWindow,ipcMain } from "electron"
 const path = require("path");
 
-const login_width = 300
+const login_width = 350
 const login_height = 370
 const register_height = 490
-
+const NODE_ENV = process.env.NODE_ENV
 const createWindow = () => {
   const win = new BrowserWindow({
     width: login_width,
     height: login_height,
-    // show: false,
+    show: false,
     autoHideMenuBar: true,
     resizable: false,
     titleBarStyle:'hidden',
-    frame:true,
+    frame:false,
+    title:"倾心IM",
     transparent:true,
     webPreferences: {
       contextIsolation: false, // 是否开启隔离上下文
       nodeIntegration: true, // 渲染进程使用Node API
       preload: path.join(__dirname, "./preload.js"), // 需要引用js文件
-      sandbox:false
+      sandbox:false,     
     },
   })
 
@@ -39,10 +40,16 @@ const createWindow = () => {
     win.loadFile(path.join(__dirname, "./index.html"))
     win.webContents.openDevTools()
   } else {
-    let url = "http://localhost:5173" // 本地启动的vue项目路径。注意：vite版本3以上使用的端口5173；版本2用的是3000
+    let url = "http://localhost:7766" // 本地启动的vue项目路径。注意：vite版本3以上使用的端口5173；版本2用的是3000
     win.loadURL(url)
+    // win.loadURL(process.env['ELECTRON_RENDERER_URL'])
     win.webContents.openDevTools()
   }
+
+  win.on('ready-to-show', () => {
+    win.show()
+    win.setTitle('倾心IM')
+  })
 }
 
 app.whenReady().then(() => {

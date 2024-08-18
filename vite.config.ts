@@ -29,6 +29,17 @@ import { fileURLToPath, URL } from 'node:url'
 //       '@': fileURLToPath(new URL('./src', import.meta.url))
 //     }
 //   },
+//   server: {
+//     hmr:true,
+//     port: 5000,
+//     proxy: {
+//       '/api': {
+//         target: 'http://127.0.0.1:5050',
+//         changeOrigin: true, //解决跨域
+//         rewrite: (path) => path.replace(/^\/api/, '')
+//       }
+//     }
+//   }
 // }))
 
 export default defineConfig(({mode}) => {
@@ -50,10 +61,21 @@ export default defineConfig(({mode}) => {
       emptyOutDir: false, // 默认情况下，若 outDir 在 root 目录下，则 Vite 会在构建时清空该目录
       outDir: "dist-electron"
       },
-      resolve: {
-        alias: {
-            '@': fileURLToPath(new URL('./src', import.meta.url))
+    resolve: {
+      alias: {
+          "@": fileURLToPath(new URL('./src', import.meta.url))
+      }
+    },
+    server: {
+      hmr:true,
+      port: 7766,
+      proxy: {
+        '/api': {
+          target: 'http://127.0.0.1:5050',
+          changeOrigin: true, //解决跨域
+          // rewrite: (path) => path.replace(/^\/api/, '/api'),
         }
-      },
+      }
+    }
   } 
 })

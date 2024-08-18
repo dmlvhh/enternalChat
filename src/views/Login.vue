@@ -101,15 +101,133 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref } from "vue";
+<script setup>
+import { ref, reactive, getCurrentInstance, nextTick, onMounted } from "vue";
+// import { useUserInfoStore } from "@/stores/UserInfoStore";
+import { useRouter } from "vue-router";
+// import md5 from "js-md5";
+const { proxy } = getCurrentInstance();
+// const userInfoStore = useUserInfoStore();
+const router = useRouter();
 
-const formData = ref({});
-const formDataRef = ref();
+const formData = ref([]);
+const formDataRef = ref(null);
+onMounted(() => {
+  changeCheckCocde();
+});
 const isLogin = ref(true);
 const changeOpType = () => {
   window.ipcRenderer.send("loginOrRegister", !isLogin.value);
   isLogin.value = !isLogin.value;
+  nextTick(() => {
+    formDataRef.value.resetFields();
+    formData.value = {};
+    clearVerify();
+    changeCheckCocde();
+  });
+};
+
+//获取验证码
+const checkCodeUrl = ref(null);
+const changeCheckCocde = async () => {
+  let result = await proxy.Request({
+    url: proxy.Api.checkCode,
+  });
+  if (!result) {
+    return;
+  }
+  checkCodeUrl.value = result.data.checkCode;
+  localStorage.setItem("checkCodeKey", result.data.checkCodeKey);
+};
+const errorMsg = ref(null);
+const showLoading = ref(false);
+const submit = async () => {
+  clearVerify();
+  if (!checkValue("checkEmail", formData.value.email, "请输入正确的邮箱")) {
+    return;
+  }
+  if (
+    !isLogin.value &&
+    !checkValue(null, formData.value.nickName, "请输入昵称")
+  ) {
+    return;
+  }
+  if (
+    !checkValue(
+      "checkPassword",
+      formData.value.password,
+      "密码只能是数字、字母、特殊字符8~18位"
+    )
+  ) {
+    return;
+  }
+
+  if (!isLogin.value && formData.value.password !== formData.value.rePassword) {
+    errorMsg.value = "两次密码不一致";
+    return;
+  }
+  if (!checkValue(null, formData.value.checkCode, "请输入正确的验证码")) {
+    return;
+  }
+  if (isLogin.value) {
+    showLoading.value = true;
+  }
+  let result = await proxy.Request({
+    url: isLogin.value ? proxy.Api.login : proxy.Api.register,
+    showError: false,
+    showLoading: isLogin.value ? false : true,
+    params: {
+      email: formData.value.email,
+      nickName: formData.value.nickName,
+      password: isLogin.value
+        ? md5(formData.value.password)
+        : formData.value.password,
+      checkCode: formData.value.checkCode,
+      checkCodeKey: localStorage.getItem("checkCodeKey"),
+    },
+    errorCallback: (response) => {
+      showLoading.value = false;
+      errorMsg.value = response.info;
+      changeCheckCocde();
+    },
+  });
+  if (!result) {
+    return;
+  }
+  if (isLogin.value) {
+    userInfoStore.setInfo(result.data);
+    localStorage.setItem("token", result.data.token);
+    router.push("/main");
+    const screeenWidth = window.screen.width;
+    const screeenHeight = window.screen.height;
+    window.ipcRenderer.send("openChat", {
+      email: formData.value.email,
+      token: result.data.token,
+      userId: result.data.userId,
+      nickName: result.data.nickName,
+      admin: result.data.admin,
+      screeenWidth: screeenWidth,
+      screeenWidth: screeenHeight,
+    });
+  } else {
+    proxy.Message.success("登录成功");
+    changeOpType();
+  }
+};
+
+const checkValue = (type, value, msg) => {
+  if (proxy.Utils.isEmpty(value)) {
+    errorMsg.value = msg;
+    return false;
+  }
+  if (type && !proxy.Verify[type](value)) {
+    errorMsg.value = msg;
+    return false;
+  }
+  return true;
+};
+const clearVerify = () => {
+  errorMsg.value = "";
 };
 </script>
 

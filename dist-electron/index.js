@@ -1,18 +1,20 @@
 "use strict";
 const electron = require("electron");
 const path = require("path");
-const login_width = 300;
+const login_width = 350;
 const login_height = 370;
 const register_height = 490;
+process.env.NODE_ENV;
 const createWindow = () => {
   const win = new electron.BrowserWindow({
     width: login_width,
     height: login_height,
-    // show: false,
+    show: false,
     autoHideMenuBar: true,
     resizable: false,
     titleBarStyle: "hidden",
-    frame: true,
+    frame: false,
+    title: "倾心IM",
     transparent: true,
     webPreferences: {
       contextIsolation: false,
@@ -37,10 +39,14 @@ const createWindow = () => {
     win.loadFile(path.join(__dirname, "./index.html"));
     win.webContents.openDevTools();
   } else {
-    let url = "http://localhost:5173";
+    let url = "http://localhost:7766";
     win.loadURL(url);
     win.webContents.openDevTools();
   }
+  win.on("ready-to-show", () => {
+    win.show();
+    win.setTitle("倾心IM");
+  });
 };
 electron.app.whenReady().then(() => {
   createWindow();
