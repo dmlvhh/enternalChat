@@ -6,16 +6,16 @@ const path = require("path");
 const login_width = 350
 const login_height = 370
 const register_height = 490
-const NODE_ENV = process.env.NODE_ENV
+
 const createWindow = () => {
   const win = new BrowserWindow({
     width: login_width,
     height: login_height,
-    show: true,
-    autoHideMenuBar: true,
+    show: false,
+    autoHideMenuBar: false,
     resizable: true,
-    // titleBarStyle:'hidden',
-    frame:true,
+    titleBarStyle:'hidden',
+    frame:false,
     title:"倾心IM",
     transparent:true,
     webPreferences: {
@@ -25,8 +25,6 @@ const createWindow = () => {
       sandbox:false,     
     },
   })
-
-
 
   // 如果打包了，渲染index.html
   if (process.env.NODE_ENV !== 'development') {
@@ -57,7 +55,7 @@ const createWindow = () => {
 
   onLoginSuccess((config)=>{
     win.setResizable(true)
-    win.setSize(850,800)
+    win.setSize(926,636)
     win.center()
      //可最大化
      win.setMaximizable(true)
