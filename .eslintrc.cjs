@@ -48,7 +48,7 @@ module.exports = {
     // 强制在关键字前后使用一致的空格
     'keyword-spacing': 0,
     // 要求或禁止末尾逗号
-    'comma-dangle': 0,
+    'comma-dangle': 1,
     // 要求使用 === 和 !==
     eqeqeq: 1,
     'standard/object-curly-even-spacing': [1, 'either'],

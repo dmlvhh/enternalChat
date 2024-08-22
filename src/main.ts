@@ -13,8 +13,9 @@ import Request from './request'
 import message from '@/utils/message'
 import api from '@/utils/api'
 import * as Pinia from "pinia"
-import WinOp from "@/components/Blank.vue"
+import Blank from "@/components/Blank.vue"
 import Layout from "@/components/Layout.vue"
+import WinOp from "@/components/WinOp.vue"
 
 const app = createApp(App)
 app.use(router)
@@ -24,6 +25,7 @@ app.mount('#app')
 
 app.component("WinOp",WinOp)
 app.component("Layout",Layout)
+app.component("Blank",Blank)
 
 app.config.globalProperties.Verify = verify;
 app.config.globalProperties.Request = Request;

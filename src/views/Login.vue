@@ -1,6 +1,6 @@
 <template>
   <div class="login-panel">
-    <div class="title drag">倾心IM</div>
+    <div class="title drag">enternal</div>
     <div v-if="showLoading" class="loading-panel">
       <img src="../assets/img/loading.gif" alt="" />
     </div>
@@ -88,17 +88,21 @@
             />
           </div>
         </el-form-item>
-        <!-- <el-form-item prop="email"> -->
         <el-button type="primary" class="login-btn" @click="submit">
           {{ !isLogin ? "注册" : "登录" }}
         </el-button>
-        <!-- </el-form-item> -->
         <div class="bottom-link" @click="changeOpType">
           <span class="a-link">{{ !isLogin ? "已有帐号" : "没有账号？" }}</span>
         </div>
       </el-form>
     </div>
   </div>
+  <win-op
+    :showSetTop="false"
+    :showMin="false"
+    :showMax="false"
+    :closeType="θ"
+  ></win-op>
 </template>
 
 <script setup>
@@ -203,6 +207,8 @@ const submit = async () => {
 
     const screeenWidth = window.screen.width;
     const screeenHeight = window.screen.height;
+    console.log(screeenWidth, screeenHeight);
+
     window.ipcRenderer.send("openChat", {
       email: formData.value.email,
       token: result.data.token,

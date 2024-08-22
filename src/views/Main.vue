@@ -39,6 +39,7 @@
       </router-view>
     </div>
   </div>
+  <win-op></win-op>
 </template>
 
 <script setup lang="ts">
