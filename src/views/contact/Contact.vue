@@ -35,7 +35,12 @@
         </template>
       </div>
     </template>
-    <template #right-content> <div class="drag-panel drag"></div> </template>
+    <template #right-content>
+      <div class="drag-panel drag">{{ rightTitle }}</div>
+      <router-view v-slot="{ Component }">
+        <component :is="Component" ref="componentRef"></component>
+      </router-view>
+    </template>
   </Layout>
 </template>
 
