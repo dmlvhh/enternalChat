@@ -47,7 +47,6 @@ import { onMounted, ref } from "vue";
 import { getCurrentInstance } from "vue";
 import { useRouter } from "vue-router";
 
-// 使用 getCurrentInstance 获取当前组件实例
 const { proxy } = getCurrentInstance();
 const router = useRouter();
 const menuList = ref([
@@ -75,8 +74,6 @@ const menuList = ref([
 
 const currentMenu = ref(menuList.value[0]);
 const changeMenu = (item) => {
-  console.log(item.path);
-
   currentMenu.value = item;
   router.push(item.path);
 };

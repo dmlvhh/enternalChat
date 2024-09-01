@@ -16,7 +16,10 @@
     >
       <div class="search-result">
         <span class="contact-type">{{ contactTypeName }}</span>
-        <div>{{ searchResult.nickName }}</div>
+        <UserBaseInfo
+          :userInfo="searchResult"
+          :showArea="searchResult.contactType == 'USER'"
+        />
       </div>
       <div
         class="op-btn"
@@ -53,8 +56,9 @@
 </template>
 <script setup>
 import { ref, reactive, getCurrentInstance, nextTick, computed } from "vue";
-const { proxy } = getCurrentInstance();
 import { useUserInfoStore } from "@/stores/index";
+
+const { proxy } = getCurrentInstance();
 const userInfoStore = useUserInfoStore();
 const contactTypeName = computed(() => {
   if (userInfoStore.getInfo().userId === searchResult.value.contactId) {
