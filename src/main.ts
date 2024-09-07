@@ -20,6 +20,7 @@ import WinOp from "@/components/WinOp.vue"
 import ContentPanel from "@/components/ContentPanel.vue"
 import ShowLocalImage from "@/components/ShowLocalImage.vue"
 import UserBaseInfo from "@/components/UserBaseInfo.vue";
+import Dialog from "@/components/Dialog.vue";
 
 const app = createApp(App)
 app.use(router)
@@ -33,6 +34,7 @@ app.component("Blank",Blank)
 app.component("ContentPanel",ContentPanel)
 app.component("ShowLocalImage",ShowLocalImage)
 app.component("UserBaseInfo",UserBaseInfo)
+app.component("Dialog",Dialog)
 
 app.config.globalProperties.Verify = verify;
 app.config.globalProperties.Request = request;

@@ -53,10 +53,12 @@
     </div>
     <div v-if="!searchResult" class="no-data">没有搜索到任何结果</div>
   </ContentPanel>
+  <SearchAdd ref="searchAddRef" @reload="resetForm" />
 </template>
 <script setup>
 import { ref, reactive, getCurrentInstance, nextTick, computed } from "vue";
 import { useUserInfoStore } from "@/stores/index";
+import SearchAdd from "./SearchAdd.vue";
 
 const { proxy } = getCurrentInstance();
 const userInfoStore = useUserInfoStore();
