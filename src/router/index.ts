@@ -38,7 +38,7 @@ const router = createRouter({
             {
               path: '/contact/search',
               name: '搜索',
-              component: () => import('@/views/contact/Search.vue')
+              component: () => import("@/views/contact/Search.vue")
             },
             {
               path: '/contact/createGroup',
@@ -54,6 +54,11 @@ const router = createRouter({
               path: '/contact/groupDetail',
               name: '群组详情',
               component: () => import('@/views/contact/GroupDetail.vue')
+            },
+            {
+              path: '/contact/contactNotice',
+              name: '新的朋友',
+              component: () => import('@/views/contact/contactApply.vue')
             }
           ]
         },

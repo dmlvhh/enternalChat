@@ -5,7 +5,7 @@
       <div class="top-search">
         <el-input
           clearable
-          placeholder="提示信息"
+          placeholder="搜索"
           v-model="searchKey"
           size="small"
           @keyup="search"
@@ -18,7 +18,7 @@
             <div
               v-for="(sub, idx) in item.children"
               :key="idx"
-              :class="['part-item', sub.path == route.path ? 'active' : '']"
+              :class="['part-item', sub.path === route.path ? 'active' : '']"
               @click="partJump(sub)"
             >
               <div
@@ -57,7 +57,7 @@
   </Layout>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import {
   ref,
   reactive,
@@ -140,6 +140,7 @@ const partJump = (data) => {
   } else {
     rightTitle.value = null;
   }
+  console.log()
   router.push(data.path);
 };
 

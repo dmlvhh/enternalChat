@@ -32,7 +32,7 @@
 </template>
 <script setup>
 import { ref, reactive, getCurrentInstance, nextTick } from "vue";
-import { useUserInfoStore } from "@/stores/index";
+import { useUserInfoStore } from "@/stores/UserInfoStore";
 import { useContactStateStore } from "@/stores/ContactStateStore";
 
 const contactStateStore = useContactStateStore();

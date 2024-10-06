@@ -46,7 +46,7 @@
           @click="sendMessage"
           >发消息</el-button
         >
-        <span v-if="(searchResult.status == 5) | (searchResult.status == 6)"
+        <span v-if="(searchResult.status == 5) || (searchResult.status == 6)"
           >对方拉黑了你</span
         >
       </div>
@@ -147,7 +147,7 @@ const resetForm = () => {
     background: #2cb6fe;
     padding: 2px 5px;
     color: #fff;
-    border-radius: 5px 0px 0px px;
+    border-radius: 5px 0 0 0;
     font-size: 12px;
   }
 
