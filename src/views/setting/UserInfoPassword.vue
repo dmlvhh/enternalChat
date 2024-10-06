@@ -47,9 +47,7 @@ const rules = {
 const emit = defineEmits(['editBack'])
 const saveUserInfo = () => {
     formDataRef.value.validate(async (valid) => {
-        if (!valid) {
-            return
-        }
+        if (!valid) return
         let params = {}
         Object.assign(params, formData.value)
 
@@ -60,9 +58,7 @@ const saveUserInfo = () => {
                     url: proxy.Api.updatePassword,
                     params
                 })
-                if (!result) {
-                    return
-                }
+                if (!result) return
                 proxy.Message.success('修改成功 请重新登录', () => {
                     //TODO重新登录
                     window.ipcRenderer.send('relogin')
