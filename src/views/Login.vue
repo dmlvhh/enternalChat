@@ -107,7 +107,7 @@
 
 <script setup>
 import { ref, getCurrentInstance, nextTick, onMounted } from "vue";
-import { useUserInfoStore } from "@/stores/index";
+import { useUserInfoStore } from "@/stores/UserInfoStore";
 import { useRouter } from "vue-router";
 import md5 from "js-md5";
 const { proxy } = getCurrentInstance();

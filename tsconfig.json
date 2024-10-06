@@ -12,6 +12,8 @@
     "baseUrl": ".", // 这代表相对于此文件的位置
     "paths": {
       "@/*": ["src/*"]
-    }
+    },
+    "module": "es2020",  // or esnext
+    "target": "es2020",  // or later
   }
 }

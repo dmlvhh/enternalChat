@@ -50,7 +50,7 @@
 import AvatarBase from "./AvatarBase.vue";
 import UserBaseInfo from "./UserBaseInfo.vue";
 import { ref, reactive, getCurrentInstance, nextTick } from "vue";
-import { useUserInfoStore } from "@/stores/index";
+import { useUserInfoStore } from "@/stores/UserInfoStore";
 
 const { proxy } = getCurrentInstance();
 const userInfoStore = useUserInfoStore();

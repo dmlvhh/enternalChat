@@ -152,13 +152,16 @@ const loadContact = async (contactType) => {
   });
   if (!result) return;
   if (contactType === "GROUP") {
-    partList.value[2].contactData = result.data;
+    for (let i = 0; i < result.data.length; i++) {
+      if (result.data[i].status == 1) {
+        partList.value[2].contactData.push(result.data[i])
+      }
+    }
+    // partList.value[2].contactData = result.data;
   } else if (contactType === "USER") {
     partList.value[3].contactData = result.data;
   }
 };
-loadContact("USER");
-loadContact("GROUP");
 
 const loadMyGroup = async () => {
   let result = await proxy.Request({
@@ -169,12 +172,31 @@ const loadMyGroup = async () => {
   partList.value[1].contactData = result.data;
 }
 
+onMounted(() => {
+  loadContact('GROUP')
+  loadContact('USER')
+  loadMyGroup()
+})
+
+const contactDetail = (contact,part) => {
+  if (part.showTitle) {
+    rightTitle.value = contact[part.contactName]
+  }else{
+    rightTitle.value = null
+  }
+  if (contact.status) {
+    router.push({
+      path: part.contactPath,
+      query: {
+        contactId: contact[part.contactId]
+      }
+    })
+  }
+}
 watch(
   () => contactStateStore.contactReload,
   (newVal, oldVal) => {
-    if (!newVal) {
-      return;
-    }
+    if (!newVal) return
     switch (newVal) {
       case "MY":
         loadMyGroup()
@@ -182,6 +204,16 @@ watch(
       case "USER":
       case "GROUP":
         loadContact(newVal);
+        break;
+      case "DISSOLUTION_GROUP":
+        loadMyGroup()
+        router.push('/contact/blank')
+        rightTitle.value = null
+        break;
+      case "LEAVE_GROUP":
+        loadContact('GROUP');
+        router.push('/contact/blank')
+        rightTitle.value = null
         break;
       case "REMOVE_USER":
         loadContact('USER');
@@ -197,19 +229,7 @@ watch(
   }
 );
 
-const contactDetail = (contact,part) => {
-  if (part.showTitle) {
-    rightTitle.value = contact[part.contactName]
-  }else{
-    rightTitle.value = null
-  }
-  router.push({
-    path:part.contactPath,
-    query:{
-      contactId:contact[part.contactId]
-    }
-  })
-}
+
 </script>
 
 <style lang="scss" scoped>

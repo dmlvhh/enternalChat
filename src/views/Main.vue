@@ -46,7 +46,7 @@
 import { onMounted, ref } from "vue";
 import { getCurrentInstance } from "vue";
 import { useRouter } from "vue-router";
-import { useUserInfoStore } from "@/stores/index";
+import { useUserInfoStore } from "@/stores/UserInfoStore.ts";
 const userInfoStore = useUserInfoStore();
 const { proxy } = getCurrentInstance();
 const router = useRouter();

@@ -26,10 +26,10 @@ const createWindow = () => {
       contextIsolation: false, // 是否开启隔离上下文
       nodeIntegration: true, // 渲染进程使用Node API
       preload: path.join(__dirname, "./preload.js"), // 需要引用js文件
-      sandbox:false,     
+      sandbox:false,
     },
   })
-  
+
   // 如果打包了，渲染index.html
   if (process.env.NODE_ENV !== 'development') {
     win.loadFile(path.join(__dirname, "./index.html"))
@@ -52,7 +52,7 @@ const createWindow = () => {
     win.setResizable(false)
   })
 
-  onLoginSuccess((config)=>{    
+  onLoginSuccess((config)=>{
     win.setResizable(true)
     win.setSize(926,636)
     win.center()
@@ -70,10 +70,10 @@ const createWindow = () => {
     })
     tray.setContextMenu(Menu.buildFromTemplate(contextMenu))
   })
-  
+
   winTitleOp((e, {action,data}) => {
     const webContents = e.sender
-    const w = BrowserWindow.fromWebContents(webContents) 
+    const w = BrowserWindow.fromWebContents(webContents)
     switch (action) {
       case 'close': {
         if (data.closeType == 0) {
@@ -140,3 +140,5 @@ app.on("window-all-closed", () => {
     app.quit()
   }
 })
+
+app.disableHardwareAcceleration();

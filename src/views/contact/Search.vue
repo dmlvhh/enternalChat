@@ -57,7 +57,7 @@
 </template>
 <script setup>
 import { ref, reactive, getCurrentInstance, nextTick, computed } from "vue";
-import { useUserInfoStore } from "@/stores/index";
+import { useUserInfoStore } from "@/stores/UserInfoStore";
 import SearchAdd from "./SearchAdd.vue";
 
 const { proxy } = getCurrentInstance();
