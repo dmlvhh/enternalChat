@@ -27,7 +27,20 @@
               ></div>
               <div class="text">{{ sub.name }}</div>
             </div>
-            <template v-for="(contact, index) in item.contactData"></template>
+            <template v-for="(contact, index) in item.contactData" :key="index">
+              <div
+                :class="[
+                  'part-item',
+                  contact[item.contactId] == route.query.contactId
+                    ? 'active'
+                    : '',
+                ]"
+                @click="contactDetail(contact, item)"
+              >
+                <Avatar :userId="contact[item.contactId]" :width="35"></Avatar>
+                <div class="text">{{ contact[item.contactName] }}</div>
+              </div>
+            </template>
             <template v-if="item.contactData && item.contactData.length == 0">
               <div class="no-data">{{ item.emptyMsg }}</div>
             </template>
@@ -55,7 +68,9 @@ import {
 } from "vue";
 
 import { useRouter, useRoute } from "vue-router";
+import { useContactStateStore } from "@/stores/ContactStateStore";
 
+const contactStateStore = useContactStateStore();
 const { proxy } = getCurrentInstance();
 const router = useRouter();
 const route = useRoute();
@@ -127,6 +142,55 @@ const partJump = (data) => {
   }
   router.push(data.path);
 };
+
+const loadContact = async (contactType) => {
+  let result = await proxy.Request({
+    url: proxy.Api.loadContact,
+    params: {
+      contactType,
+    },
+  });
+  if (!result) return;
+  if (contactType === "GROUP") {
+    partList.value[2].contactData = result.data;
+  } else if (contactType === "USER") {
+    partList.value[3].contactData = result.data;
+  }
+};
+loadContact("USER");
+loadContact("GROUP");
+
+const loadMyGroup = async () => {
+  let result = await proxy.Request({
+    url:proxy.Api.loadMyGroup,
+    showLoading:false,
+  })
+  if (!result) return
+  partList.value[1].contactData = result.data;
+}
+
+watch(
+  () => contactStateStore.contactReload,
+  (newVal, oldVal) => {
+    if (!newVal) {
+      return;
+    }
+    switch (newVal) {
+      case "MY":
+        loadMyGroup()
+        break
+      case "USER":
+      case "GROUP":
+        loadContact(newVal);
+        break;
+    }
+    contactStateStore.setContactReload(null);
+  },
+  {
+    immediate: true,
+    deep: true,
+  }
+);
 </script>
 
 <style lang="scss" scoped>

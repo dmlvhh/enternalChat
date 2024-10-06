@@ -87,10 +87,7 @@ const search = async () => {
       contactId: contactId.value,
     },
   });
-  if (!result) {
-    console.log(result);
-    return;
-  }
+  if (!result) return;
   searchResult.value = result.data;
 };
 const searchAddRef = ref();

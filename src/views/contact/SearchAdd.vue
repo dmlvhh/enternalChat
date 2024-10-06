@@ -33,6 +33,9 @@
 <script setup>
 import { ref, reactive, getCurrentInstance, nextTick } from "vue";
 import { useUserInfoStore } from "@/stores/index";
+import { useContactStateStore } from "@/stores/ContactStateStore";
+
+const contactStateStore = useContactStateStore();
 const userInfoStore = useUserInfoStore();
 const { proxy } = getCurrentInstance();
 const formData = ref({});

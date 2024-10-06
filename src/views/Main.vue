@@ -46,7 +46,8 @@
 import { onMounted, ref } from "vue";
 import { getCurrentInstance } from "vue";
 import { useRouter } from "vue-router";
-
+import { useUserInfoStore } from "@/stores/index";
+const userInfoStore = useUserInfoStore();
 const { proxy } = getCurrentInstance();
 const router = useRouter();
 const menuList = ref([
@@ -77,6 +78,18 @@ const changeMenu = (item) => {
   currentMenu.value = item;
   router.push(item.path);
 };
+const getLoginInfo = async () => {
+  let result = await proxy.Request({
+    url: proxy.Api.getUserInfo,
+  });
+  if (!result) {
+    return;
+  }
+  userInfoStore.setInfo(result.data);
+};
+onMounted(() => {
+  getLoginInfo();
+});
 </script>
 
 <style lang="scss" scoped>
