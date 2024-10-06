@@ -12,6 +12,7 @@ import verify from '@/utils/verify';
 import request from './request'
 import message from '@/utils/message'
 import api from '@/utils/api'
+import confirm from '@/utils/confirm'
 import * as Pinia from "pinia"
 
 import Blank from "@/components/Blank.vue"
@@ -45,3 +46,4 @@ app.config.globalProperties.Request = request;
 app.config.globalProperties.Message = message;
 app.config.globalProperties.Utils = utils;
 app.config.globalProperties.Api = api;
+app.config.globalProperties.Confirm = confirm;

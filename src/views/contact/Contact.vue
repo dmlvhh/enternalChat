@@ -183,6 +183,11 @@ watch(
       case "GROUP":
         loadContact(newVal);
         break;
+      case "REMOVE_USER":
+        loadContact('USER');
+        router.push('/contact/blank')
+        rightTitle.value = null
+        break;
     }
     contactStateStore.setContactReload(null);
   },
@@ -191,6 +196,20 @@ watch(
     deep: true,
   }
 );
+
+const contactDetail = (contact,part) => {
+  if (part.showTitle) {
+    rightTitle.value = contact[part.contactName]
+  }else{
+    rightTitle.value = null
+  }
+  router.push({
+    path:part.contactPath,
+    query:{
+      contactId:contact[part.contactId]
+    }
+  })
+}
 </script>
 
 <style lang="scss" scoped>
